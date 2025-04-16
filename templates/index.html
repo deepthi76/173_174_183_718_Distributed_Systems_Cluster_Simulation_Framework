@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cluster UI</title>
+</head>
+<body>
+  <h1>Cluster Dashboard</h1>
+
+  <h2>Add Node</h2>
+  <input type="number" id="node_cpu" placeholder="CPU cores">
+  <button onclick="addNode()">Add Node</button>
+
+  <h2>Add Pod</h2>
+  <input type="number" id="pod_cpu" placeholder="CPU required">
+  <button onclick="addPod()">Add Pod</button>
+
+  <h2>Cluster Status</h2>
+  <div id="node_cards" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>
