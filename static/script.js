@@ -35,10 +35,10 @@ function refresh() {
                 nodeCard.style.overflow = 'hidden';
                 nodeCard.style.borderRadius = '10px';
                 nodeCard.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                nodeCard.style.backgroundColor = node.active ? '#f8fff8' : '#fff0f0';
+                nodeCard.style.backgroundColor = node.active ? '#e0f5e0' : '#f8d6d6';
 
                 const nodeInfo = `
-                    <h3>Node ${node.id}</h3>
+                    <h4 class="node-id fs-7">Node ${node.id}</h4>
                     <p><strong>Total CPU:</strong> ${node.total_cpu}</p>
                     <p><strong>Available CPU:</strong> ${node.available_cpu}</p>
                     <p><strong>Active:</strong> ${node.active}</p>
@@ -49,8 +49,6 @@ function refresh() {
                     }</p>
 
                 `;
-
-                // Filter and reverse heartbeats to show latest on top
                 const heartbeats = heartbeatData
                     .filter(hb => hb[0] === node.id)
                     .reverse();
@@ -58,7 +56,7 @@ function refresh() {
                 const heartbeatList = document.createElement('div');
                 heartbeatList.style.maxHeight = '80px';
                 heartbeatList.style.overflowY = 'auto';
-                heartbeatList.style.border = '1px solid #ddd';
+                heartbeatList.style.border = '2px solid #ddd';
                 heartbeatList.style.padding = '5px';
                 heartbeatList.style.marginTop = '5px';
                 heartbeatList.style.background = '#fafafa';
@@ -66,7 +64,7 @@ function refresh() {
                 const lastThree = heartbeats.slice(0, 3);
                 heartbeatList.innerHTML = lastThree.map(hb => `🫀 ${hb[1]}`).join('<br>');
 
-                nodeCard.innerHTML = nodeInfo + '<h4>Heartbeats</h4>';
+                nodeCard.innerHTML = nodeInfo + '<h6>Heartbeats</h>';
                 nodeCard.appendChild(heartbeatList);
                 container.appendChild(nodeCard);
             });
