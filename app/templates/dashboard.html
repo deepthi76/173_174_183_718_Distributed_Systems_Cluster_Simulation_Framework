@@ -1,0 +1,127 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <!-- Node Management -->
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5>Node Management</h5>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('main.add_node') }}">
+            <div class="mb-3">
+              <label class="form-label">CPU Cores</label>
+              <input
+                type="number"
+                name="cpu_cores"
+                class="form-control"
+                min="1"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Add Node</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+          <h5>Pod Management</h5>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('main.launch_pod') }}">
+            <div class="mb-3">
+              <label class="form-label">CPU Requirements</label>
+              <input
+                type="number"
+                name="cpu_requirements"
+                class="form-control"
+                min="1"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Launch Pod</button>
+          </form>
+        </div>
+      </div>
+
+      <form method="POST" action="{{ url_for('main.reset_cluster') }}">
+        <button type="submit" class="btn btn-danger w-100">
+          Reset Cluster
+        </button>
+      </form>
+    </div>
+
+    <!-- Cluster Status -->
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h5>Cluster Nodes</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Node ID</th>
+                  <th>CPU Cores</th>
+                  <th>Available CPU</th>
+                  <th>Status</th>
+                  <th>Pods</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for node_id, node in nodes.items() %}
+                <tr
+                  class="{% if node.status == 'healthy' %}table-success{% else %}table-danger{% endif %}"
+                >
+                  <td>{{ node_id }}</td>
+                  <td>{{ node.cpu_cores }}</td>
+                  <td>{{ node.available_cpu }}</td>
+                  <td>{{ node.status|title }}</td>
+                  <td>
+                    {% for pod_id in node.pods %}
+                    <span class="badge bg-primary">{{ pod_id }}</span>
+                    {% endfor %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h5>Cluster Pods</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Pod ID</th>
+                  <th>CPU Req</th>
+                  <th>Node</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pod_id, pod in pods.items() %}
+                <tr>
+                  <td>{{ pod_id }}</td>
+                  <td>{{ pod.cpu_requirements }}</td>
+                  <td>{{ pod.node_id }}</td>
+                  <td>{{ pod.status|title }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
